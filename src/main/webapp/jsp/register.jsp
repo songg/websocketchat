@@ -9,8 +9,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>网络聊天室</title>
-<link rel="stylesheet" type="text/css" href="style/common.css"/>
-<link rel="stylesheet" type="text/css" href="style/login.css"/>
+<link rel="stylesheet" type="text/css" href="../style/common.css"/>
+<link rel="stylesheet" type="text/css" href="../style/login.css"/>
 </head>
 <body>
     <div id="loginBox">
