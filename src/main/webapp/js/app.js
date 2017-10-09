@@ -1,4 +1,5 @@
 var stompClient = null;
+var roomId = "";
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -13,16 +14,14 @@ function setConnected(connected) {
     $("#greetings").html("");
 }
 
+function quitRoomStatus(status) {
+	$("#quit").prop("disabled", status);
+}
+
 function connect() {
     var socket = ws = new WebSocket("ws://chat.meizu.com/ws.do");
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
-        });
-    });
+    stompClient.connect({}, function (frame) {setConnected(true);console.log('Connected: ' + frame);});
 }
 
 function matching(name) {
@@ -40,6 +39,8 @@ function matching(name) {
 		  		});
 		  		
 		  		stompClient.send("/app/join/" + data.roomId + "/" + data.user, {}, JSON.stringify({'roomId': data}));
+		  		roomId = data.roomId;
+				quitRoomStatus(false);		  		
       		},
             error: function(err) {}
       	});
@@ -59,15 +60,12 @@ function disconnect() {
         stompClient.disconnect();
     }
     setConnected(false);
+    quitRoomStatus(true);		  	
     console.log("Disconnected");
 }
 
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
-}
-
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+function quitRoom() {
+	stompClient.send("/app/quit/" + roomId + "/" + $("#name").val(), {});
 }
 
 $(function () {
@@ -78,4 +76,5 @@ $(function () {
     $( "#matching" ).click(function() { matching($("#name").val()); });
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#send" ).click(function() { sendName(); });
+    $( "#quit" ).click(function() { quitRoom(); });
 });

@@ -21,7 +21,7 @@ import com.tx.vo.Room;
 import com.tx.vo.RoomAndUser;
 
 @RestController
-public class GreetingController {
+public class RoomController {
 
 	Map<String, List<Room>> rooms = new ConcurrentHashMap<>();
 	Map<String, Room> roomsCache = new ConcurrentHashMap<>();
@@ -37,6 +37,11 @@ public class GreetingController {
 		return greeting;
 	}
 
+	/**
+	 * 查找房间
+	 * @param name
+	 * @return
+	 */
 	@RequestMapping("/matching")
 	public RoomAndUser queryRoom(String name) {
 		List<Room> roomList = rooms.get("LOW");
@@ -77,10 +82,29 @@ public class GreetingController {
 	
 	
 
+	/**
+	 * 加入房间并在房间内广播加入用户
+	 * @param roomId
+	 * @param user
+	 */
 	@MessageMapping("/join/{roomId}/{user}")
 	public void join(@DestinationVariable String roomId, @DestinationVariable String user) {
 		String  dest = "/room/" + roomId;
 		Room room = roomsCache.get(roomId);
+		simpMessagingTemplate.convertAndSend(dest, room.getPlayers());
+	}
+	
+	
+	/**
+	 * 退出房间
+	 * @param roomId
+	 * @param user
+	 */
+	@MessageMapping("/quit/{roomId}/{user}")
+	public void quit(@DestinationVariable String roomId, @DestinationVariable String user) {
+		Room room = roomsCache.get(roomId);
+		room.getPlayers().remove(user);
+		String dest = "/room/" + roomId;
 		simpMessagingTemplate.convertAndSend(dest, room.getPlayers());
 	}
 }
