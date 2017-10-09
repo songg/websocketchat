@@ -21,7 +21,13 @@ function quitRoomStatus(status) {
 function connect() {
     var socket = ws = new WebSocket("ws://chat.meizu.com/ws.do");
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {setConnected(true);console.log('Connected: ' + frame);});
+    stompClient.connect({}, 
+    function (frame) {setConnected(true);console.log('Connected: ' + frame);}, 
+    function(message) {
+    	// check message for disconnect
+    	console.log("message:" + message);
+	}
+	);
 }
 
 function matching(name) {
@@ -65,6 +71,8 @@ function disconnect() {
 }
 
 function quitRoom() {
+	var dest = "/room/" + roomId;
+	stompClient.unsubscribe(dest);
 	stompClient.send("/app/quit/" + roomId + "/" + $("#name").val(), {});
 }
 

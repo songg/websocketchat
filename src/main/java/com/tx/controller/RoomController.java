@@ -107,4 +107,10 @@ public class RoomController {
 		String dest = "/room/" + roomId;
 		simpMessagingTemplate.convertAndSend(dest, room.getPlayers());
 	}
+	
+	
+	@MessageMapping("/start/{roomId}")
+	public void start(String roomId) {
+		
+	}
 }
