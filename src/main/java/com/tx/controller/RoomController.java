@@ -19,6 +19,7 @@ import com.tx.vo.Greeting;
 import com.tx.vo.HelloMessage;
 import com.tx.vo.Room;
 import com.tx.vo.RoomAndUser;
+import com.tx.vo.UserVO;
 
 @RestController
 public class RoomController {
@@ -46,7 +47,7 @@ public class RoomController {
 	public RoomAndUser queryRoom(String name) {
 		List<Room> roomList = rooms.get("LOW");
 		RoomAndUser roomAndUser = new RoomAndUser();
-		roomAndUser.setUser(name);
+		
 		if (CollectionUtils.isNotEmpty(roomList)) {
 			for (Room r : roomList) {
 				if(r.getStatus() == 0 && r.getPlayers().size() <6) {
@@ -60,6 +61,12 @@ public class RoomController {
 					}
 					
 					if(join) {
+						UserVO userVo = new UserVO();
+						userVo.setName(name);
+						userVo.setIndex(index);
+						
+						roomAndUser.setUser(name);
+						
 						r.getPlayers().add(name);
 					}
 				}
