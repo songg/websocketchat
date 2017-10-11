@@ -39,12 +39,16 @@ function matching(name) {
 			data: {name : name},
 		  	success: function(data){
 		  		var dest = "/room/" + data.roomId;
-		  		console.log("dest:" + dest)
-		  		stompClient.subscribe(dest, function (username) {
-		  			joinRoom(JSON.parse(username.body));
+		  		stompClient.subscribe(dest, function (msg) {
+		  			joinRoom(JSON.parse(msg.body));
 		  		});
 		  		
-		  		stompClient.send("/app/join/" + data.roomId + "/" + data.user, {}, JSON.stringify({'roomId': data}));
+		  		var userDest = "/room/" + data.roomId + "/user/" + data.user.index;
+		  		stompClient.subscribe(userDest, function(msg) {
+		  			rolePick(JSON.parse(msg.body));
+		  		}); 
+		  		
+		  		stompClient.send("/app/join/" + data.roomId + "/" + data.user.name, {}, JSON.stringify({'roomId': data}));
 		  		roomId = data.roomId;
 				quitRoomStatus(false);		  		
       		},
@@ -52,13 +56,48 @@ function matching(name) {
       	});
 }
 
-function joinRoom(user) {
+function joinRoom(room) {
 	$("#players").html("");
 	$("#roomId").html("");
-	$.each(user, function(i, item) {
-			$("#players").append("<tr><td>" + item + "</td></tr>");
-			});
+	$.each(room.players, function(i, item) {
+				$("#players").append("<tr><td>" + item.name + "</td></tr>");
+			
+				changeRoomHolder(item.name, item.index, room.holderIndex);
+			}
+	);
 	
+}
+
+function changeRoomHolder(username, userindex, holderIndex) {
+	if($("#name").val() == username) {
+		if(userindex == holderIndex) {
+			$("#start").prop("disabled", false);
+		}else {
+			$("#start").prop("disabled", true);
+		}
+	}
+}
+
+function startGame() {
+	var dest = "/app/start/" + roomId;
+	stompClient.send(dest, {});
+}
+
+function rolePick(roleint) {
+	switch(roleint) {
+		case 1:
+			alert("你的角色是:狼人")
+  			break;
+		case 2:
+  			alert("你的角色是:村民")
+  			break;
+		case 3:
+			alert("你的角色是:守卫")
+			break;
+		case 4:
+			alert("你的角色是:预言家")
+			break;
+	}
 }
 
 function disconnect() {
@@ -67,12 +106,9 @@ function disconnect() {
     }
     setConnected(false);
     quitRoomStatus(true);		  	
-    console.log("Disconnected");
 }
 
 function quitRoom() {
-	var dest = "/room/" + roomId;
-	stompClient.unsubscribe(dest);
 	stompClient.send("/app/quit/" + roomId + "/" + $("#name").val(), {});
 }
 
@@ -85,4 +121,5 @@ $(function () {
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#send" ).click(function() { sendName(); });
     $( "#quit" ).click(function() { quitRoom(); });
+    $( "#start" ).click(function() { startGame(); });
 });
