@@ -49,9 +49,9 @@ public class RoomController {
 	public RoomAndUser queryRoom(String name) {
 		List<Room> roomList = rooms.get("LOW");
 		RoomAndUser roomAndUser = new RoomAndUser();
-
+		boolean createNewRoom = true;
 		if (CollectionUtils.isNotEmpty(roomList)) {
-			//加入已有房间
+			// 加入已有房间
 			for (Room r : roomList) {
 				synchronized (r.getPlayers()) {
 					if (r.getStatus() == 0 && r.getPlayers().size() < 6) {
@@ -63,22 +63,25 @@ public class RoomController {
 						userVo.setLevel(10);
 						roomAndUser.setUser(userVo);
 						r.getPlayers().add(userVo);
+						createNewRoom = false;
 						break;
 					}
 				}
 			}
-		} else {
-			//未匹配到房间，创建一个新房间
+		}
+		
+		if (createNewRoom) {
+			// 未匹配到房间，创建一个新房间
 			Room r = new Room();
 			roomList = new ArrayList<>();
 			List<UserVO> players = new ArrayList<>();
-			
+
 			UserVO player = new UserVO();
 			player.setIndex(1);
 			player.setLevel(10);
 			player.setName(name);
 			players.add(player);
-			
+
 			r.setPlayers(players);
 			r.setStatus(0);
 			r.setRoomId(String.valueOf(RandomUtils.nextLong()));
@@ -121,6 +124,7 @@ public class RoomController {
 
 	/**
 	 * 开始游戏
+	 * 
 	 * @param roomId
 	 */
 	@MessageMapping("/start/{roomId}")
@@ -128,7 +132,7 @@ public class RoomController {
 		Room room = roomsCache.get(roomId);
 		String dest = "/room/%s/user/%d";
 		RolePicker rolePicker = new RolePicker();
-		for(UserVO player : room.getPlayers()) {
+		for (UserVO player : room.getPlayers()) {
 			simpMessagingTemplate.convertAndSend(String.format(dest, roomId, player.getIndex()), rolePicker.pick());
 		}
 

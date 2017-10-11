@@ -28,6 +28,8 @@ function connect() {
     	console.log("message:" + message);
 	}
 	);
+	
+	timeline();
 }
 
 function matching(name) {
@@ -98,6 +100,15 @@ function rolePick(roleint) {
 			alert("你的角色是:预言家")
 			break;
 	}
+	
+	var dest = "/room/" + roomId + "/timeline";
+	stompClient.subscribe(userDest, function(msg) {
+		  			timeline(JSON.parse(msg.body));
+		  		})
+	sleep(5000);
+	
+	var triggerDest = "/app/trigger/" + roomId;
+	stompClient.send(triggerDest, {});
 }
 
 function disconnect() {
@@ -108,8 +119,22 @@ function disconnect() {
     quitRoomStatus(true);		  	
 }
 
+function timeline(timelineMsg) {
+	
+}
+
 function quitRoom() {
 	stompClient.send("/app/quit/" + roomId + "/" + $("#name").val(), {});
+}
+
+function sleep(numberMillis) { 
+	var now = new Date(); 
+	var exitTime = now.getTime() + numberMillis; 
+	while (true) { 
+		now = new Date(); 
+		if (now.getTime() > exitTime) 
+			return; 
+	} 
 }
 
 $(function () {
