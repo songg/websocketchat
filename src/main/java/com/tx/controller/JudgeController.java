@@ -34,8 +34,7 @@ public class JudgeController {
 	@MessageMapping("/trigger/{roomId}")
 	public void timeline(@DestinationVariable String roomId, int day) {
 		String dest = "/room/%s/timeline";
-		
 		TimeLineVO timeLine = new TimeLineVO();
-		simpMessagingTemplate.convertAndSend(String.format(dest, roomId), payload);
+		simpMessagingTemplate.convertAndSend(String.format(dest, roomId), timeLine);
 	}
 }

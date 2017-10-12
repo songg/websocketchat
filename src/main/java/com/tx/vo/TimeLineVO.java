@@ -10,6 +10,11 @@ public class TimeLineVO {
 	 * 被杀者编号
 	 */
 	private int deadIndex;
+	
+	/**
+	 * 1:游戏继续。 2:狼人胜利，3:村民胜利
+	 */
+	private int type;
 
 	public int getDay() {
 		return day;
@@ -25,6 +30,14 @@ public class TimeLineVO {
 
 	public void setDeadIndex(int deadIndex) {
 		this.deadIndex = deadIndex;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 	
 	
