@@ -3,6 +3,8 @@ package com.tx.vo;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 public class Room {
 	/**
 	 * 房间id
@@ -22,6 +24,11 @@ public class Room {
 	 * 房间状态: 0,准备中. 1,游戏中
 	 */
 	private int status;
+	
+	/**
+	 * 监听用秘钥。防止别人恶意监听
+	 */
+	private String privateKey;
 
 	public String getRoomId() {
 		return roomId;
@@ -77,5 +84,24 @@ public class Room {
 		for (UserVO userVO : r.getPlayers()) {
 			System.out.println(userVO.getIndex());
 		}
+	}
+
+	public String getPrivateKey() {
+		return privateKey;
+	}
+
+	public void setPrivateKey(String privateKey) {
+		this.privateKey = privateKey;
+	}
+	
+	public UserVO getPlayer(int playerIndex) {
+		if(CollectionUtils.isNotEmpty(players)) {
+			for(UserVO userVO : players) {
+				if(userVO.getIndex() == playerIndex) {
+					return userVO;
+				}
+			}
+		}
+		return null;
 	}
 }

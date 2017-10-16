@@ -1,10 +1,12 @@
 package com.tx.vo;
 
+import java.util.Map;
+
 public class TimeLineVO {
 	/**
-	 * 1:天亮了，0:天黑请闭眼
+	 * true:天亮了，false:天黑请闭眼
 	 */
-	private int day;
+	private boolean day;
 	
 	/**
 	 * 被杀者编号
@@ -15,12 +17,22 @@ public class TimeLineVO {
 	 * 1:游戏继续。 2:狼人胜利，3:村民胜利
 	 */
 	private int type;
+	
+	/**
+	 * 投票行为
+	 */
+	private Map<Integer, Integer> voteOps;
+	
+	/**
+	 * 天数
+	 */
+	private int dateCount;
 
-	public int getDay() {
+	public boolean getDay() {
 		return day;
 	}
 
-	public void setDay(int day) {
+	public void setDay(boolean day) {
 		this.day = day;
 	}
 
@@ -39,6 +51,21 @@ public class TimeLineVO {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
+
+	public Map<Integer, Integer> getVoteOps() {
+		return voteOps;
+	}
+
+	public void setVoteOps(Map<Integer, Integer> voteOps) {
+		this.voteOps = voteOps;
+	}
+
+	public int getDateCount() {
+		return dateCount;
+	}
+
+	public void setDateCount(int dateCount) {
+		this.dateCount = dateCount;
+	}
 	
 }

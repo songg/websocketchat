@@ -8,6 +8,11 @@ public class RoomAndUser {
 	 */
 	private UserVO user;
 	
+	/**
+	 * 房间秘钥
+	 */
+	private String roomPrivateKey;
+	
 	
 	public String getRoomId() {
 		return roomId;
@@ -20,5 +25,11 @@ public class RoomAndUser {
 	}
 	public void setUser(UserVO user) {
 		this.user = user;
+	}
+	public String getRoomPrivateKey() {
+		return roomPrivateKey;
+	}
+	public void setRoomPrivateKey(String roomPrivateKey) {
+		this.roomPrivateKey = roomPrivateKey;
 	}
 }

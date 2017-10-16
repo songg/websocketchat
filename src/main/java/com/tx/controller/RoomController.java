@@ -1,8 +1,11 @@
 package com.tx.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -27,6 +30,8 @@ public class RoomController {
 
 	Map<String, List<Room>> rooms = new ConcurrentHashMap<>();
 	Map<String, Room> roomsCache = new ConcurrentHashMap<>();
+
+	Set<String> mySet = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
@@ -61,7 +66,9 @@ public class RoomController {
 						userVo.setName(name);
 						userVo.setIndex(lastPlayer.getIndex() + 1);
 						userVo.setLevel(10);
+						userVo.setPrivateKey(UUID.randomUUID().toString());
 						roomAndUser.setUser(userVo);
+						roomAndUser.setRoomPrivateKey(r.getPrivateKey());
 						r.getPlayers().add(userVo);
 						createNewRoom = false;
 						break;
@@ -69,7 +76,7 @@ public class RoomController {
 				}
 			}
 		}
-		
+
 		if (createNewRoom) {
 			// 未匹配到房间，创建一个新房间
 			Room r = new Room();
@@ -80,17 +87,20 @@ public class RoomController {
 			player.setIndex(1);
 			player.setLevel(10);
 			player.setName(name);
+			player.setPrivateKey(UUID.randomUUID().toString());
 			players.add(player);
 
 			r.setPlayers(players);
 			r.setStatus(0);
 			r.setRoomId(String.valueOf(RandomUtils.nextLong()));
 			r.setHolderIndex(player.getIndex());
+			r.setPrivateKey(UUID.randomUUID().toString());
 			roomList.add(r);
 			rooms.put("LOW", roomList);
 			roomsCache.put(String.valueOf(r.getRoomId()), r);
 			roomAndUser.setRoomId(r.getRoomId());
 			roomAndUser.setUser(player);
+			roomAndUser.setRoomPrivateKey(r.getPrivateKey());
 		}
 		return roomAndUser;
 	}
@@ -103,9 +113,18 @@ public class RoomController {
 	 */
 	@MessageMapping("/join/{roomId}/{user}")
 	public void join(@DestinationVariable String roomId, @DestinationVariable String user) {
-		String dest = "/room/" + roomId;
+		String dest = "/room/%s/%s";
 		Room room = roomsCache.get(roomId);
-		simpMessagingTemplate.convertAndSend(dest, room);
+		if (room != null) {
+			List<UserVO> players = room.getPlayers();
+			for (UserVO player : players) {
+				if (player.getName().equals(user)) {
+					simpMessagingTemplate.convertAndSend(String.format(dest, room.getPrivateKey(), roomId), room);
+					break;
+				}
+			}
+
+		}
 	}
 
 	/**
@@ -117,9 +136,16 @@ public class RoomController {
 	@MessageMapping("/quit/{roomId}/{user}")
 	public void quit(@DestinationVariable String roomId, @DestinationVariable String user) {
 		Room room = roomsCache.get(roomId);
-		room.getPlayers().remove(user);
-		String dest = "/room/" + roomId;
-		simpMessagingTemplate.convertAndSend(dest, room.getPlayers());
+		List<UserVO> players = room.getPlayers();
+		for (UserVO player : players) {
+			if (player.getName().equals(user)) {
+				players.remove(player);
+				String dest = "/room/%s/%s";
+				simpMessagingTemplate.convertAndSend(String.format(dest, room.getPrivateKey(), roomId), room);
+				break;
+			}
+		}
+
 	}
 
 	/**
@@ -130,11 +156,18 @@ public class RoomController {
 	@MessageMapping("/start/{roomId}")
 	public void start(@DestinationVariable String roomId) {
 		Room room = roomsCache.get(roomId);
-		String dest = "/room/%s/user/%d";
+		String dest = "/room/%s/%s/user/%s/%d";
 		RolePicker rolePicker = new RolePicker();
 		for (UserVO player : room.getPlayers()) {
-			simpMessagingTemplate.convertAndSend(String.format(dest, roomId, player.getIndex()), rolePicker.pick());
+			int role = rolePicker.pick();
+			player.setRole(role);
+			simpMessagingTemplate.convertAndSend(
+					String.format(dest, room.getPrivateKey(), roomId, player.getPrivateKey(), player.getIndex()), role);
 		}
 
+	}
+
+	public Map<String, Room> getRoomsCache() {
+		return roomsCache;
 	}
 }

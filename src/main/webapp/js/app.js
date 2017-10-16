@@ -1,5 +1,15 @@
 var stompClient = null;
 var roomId = "";
+var roomPrivateKey = "";
+var userPrivateKey = "";
+var userName = "";
+
+//监听dest;
+var wolfsubscription  = null;
+var roomsubscription = null;
+var seersubscription = null;
+var timelinsubscription = null;
+var roomusersubscription = null;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -14,6 +24,7 @@ function setConnected(connected) {
     $("#greetings").html("");
 }
 
+//退出房间按钮状态
 function quitRoomStatus(status) {
 	$("#quit").prop("disabled", status);
 }
@@ -28,8 +39,6 @@ function connect() {
     	console.log("message:" + message);
 	}
 	);
-	
-	timeline();
 }
 
 function matching(name) {
@@ -40,17 +49,24 @@ function matching(name) {
 			dataType: "json", 
 			data: {name : name},
 		  	success: function(data){
-		  		var dest = "/room/" + data.roomId;
-		  		stompClient.subscribe(dest, function (msg) {
+		  		roomPrivateKey = data.roomPrivateKey;
+		  		userPrivateKey = data.user.privateKey;
+		  		userName = data.user.name;
+		  		
+		  		//订阅房间广播消息，包括玩家加入，退出等
+		  		var dest = "/room/" + data.roomPrivateKey + "/" + data.roomId;
+		  		roomsubscription = stompClient.subscribe(dest, function (msg) {
 		  			joinRoom(JSON.parse(msg.body));
 		  		});
 		  		
-		  		var userDest = "/room/" + data.roomId + "/user/" + data.user.index;
-		  		stompClient.subscribe(userDest, function(msg) {
+		  		
+		  		//订阅私人消息
+		  		var userDest = "/room/" + data.roomPrivateKey + "/" + data.roomId + "/user/" + data.user.privateKey + "/" + data.user.index;
+		  		roomusersubscription = stompClient.subscribe(userDest, function(msg) {
 		  			rolePick(JSON.parse(msg.body));
 		  		}); 
 		  		
-		  		stompClient.send("/app/join/" + data.roomId + "/" + data.user.name, {}, JSON.stringify({'roomId': data}));
+		  		stompClient.send("/app/join/" + data.roomId + "/" + data.user.name, {}, JSON.stringify({'roomId': data.roomId, 'userPrivateKey' : data.user.privateKey}));
 		  		roomId = data.roomId;
 				quitRoomStatus(false);		  		
       		},
@@ -88,27 +104,32 @@ function startGame() {
 function rolePick(roleint) {
 	switch(roleint) {
 		case 1:
-			alert("你的角色是:狼人")
+			alert("你的角色是:狼人");
+			wolfsubscription = stompClient.subscribe();
   			break;
 		case 2:
-  			alert("你的角色是:村民")
+  			alert("你的角色是:村民");
   			break;
 		case 3:
-			alert("你的角色是:守卫")
+			alert("你的角色是:守卫");
 			break;
 		case 4:
-			alert("你的角色是:预言家")
+			alert("你的角色是:预言家");
+			String seerDest = "/room/" + roomPrivateKey + "/" + roomId + "/seer/" + userPrivateKey
+			seersubscription = stompClient.subscribe(seerDest, function(msg) {
+				identifyRole(JSON.parse(mgs.body));
+			});
 			break;
 	}
 	
-	var dest = "/room/" + roomId + "/timeline";
-	stompClient.subscribe(userDest, function(msg) {
+	var timelineDest = "/room/" + roomPrivateKey + "/" + roomId + "/timeline";
+	timelinsubscription = stompClient.subscribe(timelineDest, function(msg) {
 		  			timeline(JSON.parse(msg.body));
-		  		})
+		  		});
 	sleep(5000);
 	
 	var triggerDest = "/app/trigger/" + roomId;
-	stompClient.send(triggerDest, {});
+	stompClient.send(triggerDest, {}, {});
 }
 
 function disconnect() {
@@ -119,12 +140,49 @@ function disconnect() {
     quitRoomStatus(true);		  	
 }
 
+function identifyRole(roleint) {
+		switch(roleint) {
+		case 1:
+			alert("他的身份是:狼人");
+  			break;
+		default:
+  			alert("他的身份是:好人");
+	}
+}
+
 function timeline(timelineMsg) {
-	
+	console.log("30秒钟时间");
+	sleep(30);
 }
 
 function quitRoom() {
+	$("#players").html("");
+	$("#roomId").html("");
 	stompClient.send("/app/quit/" + roomId + "/" + $("#name").val(), {});
+	
+	unsubscribeAll();
+}
+
+function unsubscribeAll() {
+	if(wolfsubscription != null) {
+		wolfsubscription.unsubscribe();
+	}
+	
+	if(roomsubscription != null) {
+		roomsubscription.unsubscribe();
+	}
+	
+	if(seersubscription != null) {
+		seersubscription.unsubscribe();
+	}
+	
+	if(timelinsubscription != null) {
+		timelinsubscription.unsubscribe();
+	}
+	
+	if(roomusersubscription != null) {
+		roomusersubscription.unsubscribe();
+	}
 }
 
 function sleep(numberMillis) { 
