@@ -1,5 +1,6 @@
 package com.tx.vo;
 
+import java.util.List;
 import java.util.Map;
 
 public class TimeLineVO {
@@ -14,7 +15,7 @@ public class TimeLineVO {
 	private int deadIndex;
 	
 	/**
-	 * 1:游戏继续。 2:狼人胜利，3:村民胜利
+	 * 1:游戏继续。 2:狼人胜利，3:村民胜利, 4:平票PK
 	 */
 	private int type;
 	
@@ -27,6 +28,11 @@ public class TimeLineVO {
 	 * 天数
 	 */
 	private int dateCount;
+	
+	/**
+	 * 平票待PK玩家
+	 */
+	private List<Integer> pk;
 
 	public boolean getDay() {
 		return day;
@@ -66,6 +72,14 @@ public class TimeLineVO {
 
 	public void setDateCount(int dateCount) {
 		this.dateCount = dateCount;
+	}
+
+	public List<Integer> getPk() {
+		return pk;
+	}
+
+	public void setPk(List<Integer> pk) {
+		this.pk = pk;
 	}
 	
 }
