@@ -58,13 +58,14 @@ public class RoomController {
 		if (CollectionUtils.isNotEmpty(roomList)) {
 			// 加入已有房间
 			for (Room r : roomList) {
-				synchronized (r.getPlayers()) {
-					if (r.getStatus() == 0 && r.getPlayers().size() < 6) {
+				List<Integer> playerIndexRepo = r.getPlayerIndex();
+				synchronized (playerIndexRepo) {
+					if (r.getStatus() == 0 && playerIndexRepo.size() > 0) {
 						roomAndUser.setRoomId(r.getRoomId());
-						UserVO lastPlayer = r.getPlayers().get(r.getPlayers().size() - 1);
 						UserVO userVo = new UserVO();
 						userVo.setName(name);
-						userVo.setIndex(lastPlayer.getIndex() + 1);
+						userVo.setIndex(r.getPlayerIndex().get(0));
+						r.getPlayerIndex().remove(0);
 						userVo.setLevel(10);
 						userVo.setPrivateKey(UUID.randomUUID().toString());
 						roomAndUser.setUser(userVo);
@@ -84,7 +85,8 @@ public class RoomController {
 			List<UserVO> players = new ArrayList<>();
 
 			UserVO player = new UserVO();
-			player.setIndex(1);
+			player.setIndex(r.getPlayerIndex().get(0));
+			r.getPlayerIndex().remove(0);
 			player.setLevel(10);
 			player.setName(name);
 			player.setPrivateKey(UUID.randomUUID().toString());
@@ -140,6 +142,7 @@ public class RoomController {
 		for (UserVO player : players) {
 			if (player.getName().equals(user)) {
 				players.remove(player);
+				room.getPlayerIndex().add(player.getIndex());
 				String dest = "/room/%s/%s";
 				simpMessagingTemplate.convertAndSend(String.format(dest, room.getPrivateKey(), roomId), room);
 				break;

@@ -30,10 +30,13 @@ function quitRoomStatus(status) {
 }
 
 function connect() {
-    var socket = ws = new WebSocket("ws://chat.meizu.com/ws.do");
+    var socket = ws = new WebSocket("ws://172.17.137.163/ws.do");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, 
-    function (frame) {setConnected(true);console.log('Connected: ' + frame);}, 
+    function (frame) {
+    	setConnected(true);
+    	console.log('Connected: ' + frame);
+    },
     function(message) {
     	// check message for disconnect
     	console.log("message:" + message);
@@ -115,7 +118,7 @@ function rolePick(roleint) {
 			break;
 		case 4:
 			alert("你的角色是:预言家");
-			String seerDest = "/room/" + roomPrivateKey + "/" + roomId + "/seer/" + userPrivateKey
+			var seerDest = "/room/" + roomPrivateKey + "/" + roomId + "/seer/" + userPrivateKey
 			seersubscription = stompClient.subscribe(seerDest, function(msg) {
 				identifyRole(JSON.parse(mgs.body));
 			});

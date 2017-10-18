@@ -18,6 +18,7 @@ detected.
 	<Set name="virtualHosts">
 		<Array type="String">
 			<Item>chat.meizu.com</Item>
+			<Item>172.17.137.163</Item>
 		</Array>
 	</Set>
 	

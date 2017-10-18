@@ -29,6 +29,22 @@ public class Room {
 	 * 监听用秘钥。防止别人恶意监听
 	 */
 	private String privateKey;
+	
+	/**
+	 * 玩家编号
+	 */
+	List<Integer> playerIndex; 
+	
+	
+	public Room() {
+		playerIndex = new ArrayList<>();
+		playerIndex.add(1);
+		playerIndex.add(2);
+		playerIndex.add(3);
+		playerIndex.add(4);
+		playerIndex.add(5);
+		playerIndex.add(6);
+	}
 
 	public String getRoomId() {
 		return roomId;
@@ -62,30 +78,6 @@ public class Room {
 		this.holderIndex = holderIndex;
 	}
 
-	public static void main(String[] args) {
-		Room r = new Room();
-		r.setRoomId("1");
-		r.setStatus(0);
-		List<UserVO> players = new ArrayList<>();
-		UserVO vo1 = new UserVO();
-		vo1.setIndex(1);
-		vo1.setLevel(10);
-		vo1.setName("player1");
-		players.add(vo1);
-		
-		UserVO vo2 = new UserVO();
-		vo2.setIndex(2);
-		vo2.setLevel(10);
-		vo2.setName("player2");
-		players.add(vo2);
-		
-		r.setPlayers(players);
-		
-		for (UserVO userVO : r.getPlayers()) {
-			System.out.println(userVO.getIndex());
-		}
-	}
-
 	public String getPrivateKey() {
 		return privateKey;
 	}
@@ -94,6 +86,10 @@ public class Room {
 		this.privateKey = privateKey;
 	}
 	
+	public List<Integer> getPlayerIndex() {
+		return playerIndex;
+	}
+
 	public UserVO getPlayer(int playerIndex) {
 		if(CollectionUtils.isNotEmpty(players)) {
 			for(UserVO userVO : players) {

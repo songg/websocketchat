@@ -1,0 +1,672 @@
+.enter-screen {
+	background-color: #1a2f50 !important;
+	text-align: center;
+}
+.enter-bg {
+	position: relative;
+    top: 4%;
+    left: 0;
+    width: auto;
+    height: 90%;
+	z-index: -2;
+}
+.enter-message-box {
+	position: fixed;
+    top: 32%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+.enter-message-box p {
+	font-family: "楷体","楷体_GB2312";
+    font-size: 19px;
+	margin: auto;
+	margin-top: 10px;
+}
+.enter-startbtn {
+	position: relative;
+    margin-top: 10px;
+    filter: hue-rotate(90deg) saturate(50%);
+}
+
+.game-screen {
+	background-color: #1a2f50 !important;
+	text-align: center;
+}
+.game-bg {
+	position: fixed;
+    top: 5%;
+    left: 12.5%;
+    width: auto;
+    height: 90%;
+    z-index: -2;
+}
+.id {
+	position: fixed;
+    top: 30%;
+    left: 20%;
+    width: auto;
+    height: 40%;
+    z-index: -1;
+}
+.lyingman-icon {
+	position: fixed;
+	top: 2%;
+	left: 0;
+	width: auto;
+	height: 17%;
+	z-index: -1;
+}
+.player-card {
+	position: fixed;
+    bottom: 40%;
+    left: 47%;
+    height: 9%;
+    width: auto;
+    z-index: 0;
+}
+.table-section {
+	position: fixed;
+	top: 0%;
+	left: 0%;
+	height: 100%;
+	width: 100%;
+}
+.player-name-section {
+	font-family: "楷体","楷体_GB2312";
+    font-size: 18px;
+	font-weight: bold;
+}
+.player-name-section div {
+	position: fixed;
+	/*border: solid 2px black;*/
+	width: 150px;
+	text-align: center;
+	transform-origin: 50% 50%;
+}
+.player-name-section p {
+	margin: auto;
+}
+.player-name-1 {
+	left: 10%;
+	bottom: 33%;
+	transform: rotate(30deg);
+}
+.player-name-2 {
+	left: 23%;
+    bottom: 26%;
+    transform: rotate(11deg);
+}
+.player-name-3 {
+	left: 38%;
+    bottom: 23%;
+    transform: rotate(0deg);
+}
+.player-name-4 {
+	left: 53%;
+    bottom: 26%;
+    transform: rotate(-12deg);
+}
+.player-name-5 {
+	left: 66%;
+    bottom: 33%;
+    transform: rotate(-30deg);
+}
+.player-name-6 {
+    left: 65%;
+    bottom: 64%;
+    transform: rotate(29deg);
+}
+.player-name-7 {
+    left: 53%;
+    bottom: 70%;
+    transform: rotate(13deg);
+}
+.player-name-8 {
+    left: 23%;
+    bottom: 70%;
+    transform: rotate(-12deg);
+}
+.player-name-9 {
+	left: 10%;
+    bottom: 63%;
+    transform: rotate(-32deg);
+}
+.player-number-section {
+	font-family: "楷体","楷体_GB2312";
+    font-size: 24px;
+	font-weight: bold;
+	color: #1d62a9;
+}
+.player-number-section p {
+	position: fixed;
+	text-align: center;
+	transform-origin: 50% 50%;
+}
+.player-number-1 {
+    left: 22.4%;
+    bottom: 33%;
+    transform: rotate(30deg);
+}
+.player-number-2 {
+    left: 34%;
+    bottom: 27%;
+    transform: rotate(9deg);
+}
+.player-number-3 {
+	left: 48.5%;
+    bottom: 23%;
+    transform: rotate(0deg);
+}
+.player-number-4 {
+    left: 62%;
+    bottom: 27%;
+    transform: rotate(-24deg);
+}
+.player-number-5 {
+	left: 74%;
+    bottom: 33%;
+    transform: rotate(-35deg);
+}
+.player-number-6 {
+    left: 74%;
+    bottom: 50%;
+    transform: rotate(16deg);
+}
+.player-number-7 {
+    left: 62.6%;
+    bottom: 56%;
+    transform: rotate(9deg);
+}
+.player-number-8 {
+	left: 34%;
+    bottom: 56%;
+    transform: rotate(-13deg);
+}
+.player-number-9 {
+    left: 22.4%;
+    bottom: 50%;
+    transform: rotate(-37deg);
+}
+.player-death-section img {
+	position: fixed;
+	width: auto;
+	height: 5%;
+}
+.player-death-1 {
+    left: 20%;
+    bottom: 40%;
+    transform: rotate(50deg);
+}
+.player-death-2 {
+    left: 32%;
+    bottom: 35%;
+    transform: rotate(29deg);
+}
+.player-death-3 {
+	left: 46.5%;
+    bottom: 31%;
+    transform: rotate(20deg);
+}
+.player-death-4 {
+    left: 60%;
+    bottom: 35%;
+    transform: rotate(-4deg);
+}
+.player-death-5 {
+	left: 72%;
+    bottom: 41%;
+    transform: rotate(-15deg);
+}
+.player-death-6 {
+    left: 72%;
+    bottom: 58%;
+    transform: rotate(36deg);
+}
+.player-death-7 {
+    left: 60.6%;
+    bottom: 63%;
+    transform: rotate(29deg);
+}
+.player-death-8 {
+	left: 32%;
+    bottom: 64%;
+    transform: rotate(-33deg);
+}
+.player-death-9 {
+    left: 20.4%;
+    bottom: 58%;
+    transform: rotate(-57deg);
+}
+.player-dialog-section {
+	font-family: "楷体","楷体_GB2312";
+    font-size: 16px;
+	font-weight: normal;
+	color: black;
+}
+.player-dialog {
+	width: 90px;
+    padding: 18px 6px;
+    margin-left: 44px;
+    background: #beceeb;
+    position: relative;
+    word-wrap: break-word;
+    border-radius: 5px;
+}
+.player-dialog span {
+	width:0; 
+	height:0; 
+	font-size:0; 
+	overflow:hidden; 
+	position:absolute;
+}
+.player-dialog span.bot {
+	border-width: 24px;
+    border-style: solid;
+    border-color: transparent #beceeb #beceeb transparent;
+    left: -22px;
+    top: 2px;
+    z-index: -1;
+}
+.player-dialog span.top {
+	border-width: 5px 11px;
+    border-style: dashed solid solid dashed;
+    border-color: transparent #1a2f50 #1a2f50 transparent;
+    left: -22px;
+    top: 41px;
+}
+.player-dialog-1 {
+	position: fixed;
+	top: 68%;
+	left: 21%;
+}
+.player-dialog-2 {
+    position: fixed;
+    top: 67%;
+    left: 36%;
+}
+.player-dialog-3 {
+    position: fixed;
+    top: 70%;
+    left: 52%;
+}
+.player-dialog-4 {
+    position: fixed;
+    top: 67%;
+    left: 68%;
+}
+.player-dialog-5 {
+    position: fixed;
+    top: 56%;
+    left: 77%;
+}
+.player-dialog-6 {
+	position: fixed;
+    top: 0%;
+    left: 78%;
+}
+.player-dialog-7 {
+	position: fixed;
+	top: 4%;
+	left: 68%;
+}
+.player-dialog-8 {
+	position: fixed;
+	top: 2%;
+	left: 36%;
+}
+.player-dialog-9 {
+	position: fixed;
+	top: 4%;
+	left: 21%;
+}
+.player-chat-section {
+	position: fixed;
+    bottom: 9px;
+    right: 9px;
+    width: 225px;
+    height: 135px;
+    background-color: rgba(232, 232, 232, 0.47);
+    border-radius: 5px;
+}
+.player-chat-text {
+	width: 201px;
+    height: 88px;
+    margin-top: 8px;
+    padding-left: 5px;
+    font-size: 22px;
+    background-color: rgba(220, 220, 220, 0.63);
+}
+.player-chat-btn {
+	position: relative;
+    border-radius: 10px;
+    width: 65px;
+    font-size: 17px;
+    box-sizing: border-box;
+    font-weight: bolder;
+    color: #292929;
+}
+
+.player-select-section {
+    border: 2px solid white;
+    position: fixed;
+    top: 26%;
+    left: 25%;
+    width: 49%;
+    height: 46%;
+    border-radius: 10px;
+    background-color: rgba(234, 243, 255, 0.70);
+}
+.player-select-section p {
+	font-family: "楷体","楷体_GB2312";
+    font-size: 18px;
+	margin: auto;
+	margin-top: 10px;
+}
+.player-select-list-predictor {
+	position: absolute;
+    margin-left: 16%;
+    margin-top: 2%;
+    width: 37%;
+    height: 70%;
+}
+.player-select-list-wolf {
+	position: absolute;
+    margin-left: 4%;
+    margin-top: 2%;
+    width: 37%;
+    height: 70%;
+}
+.player-select-list-guard {
+	position: absolute;
+    margin-left: 16%;
+    margin-top: 2%;
+    width: 37%;
+    height: 70%;
+}
+.player-select-list-poison {
+	position: absolute;
+    margin-left: 16%;
+    margin-top: 2%;
+    width: 37%;
+    height: 70%;
+}
+.player-select-list-vote {
+	position: absolute;
+    margin-left: 16%;
+    margin-top: 2%;
+    width: 37%;
+    height: 70%;
+}
+.player-select-btn {
+	border-radius: 17px;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #54e6f3;
+    background-color: #54e6f3;
+    position: absolute;
+	font-size: 20px;
+	color: #2958a2;
+}
+.player-select-disabled {
+	background-color: #6f6f6f !important;
+	border: 1px solid #6f6f6f !important;
+}
+.player-select-selected {
+	background-color: #e05000 !important; 
+	border: 1px solid #e05000 !important;
+}
+.player-select-1 {
+	left: 0;
+	top: 0;
+}
+.player-select-2 {
+	left: 35%;
+	top: 0;
+}
+.player-select-3 {
+	left: 70%;
+	top: 0;
+}
+.player-select-4 {
+	left: 0;
+	top: 35%;
+}
+.player-select-5 {
+	left: 35%;
+	top: 35%;
+}
+.player-select-6 {
+	left: 70%;
+	top: 35%;
+}
+.player-select-7 {
+	left: 0;
+	top: 70%;
+}
+.player-select-8 {
+	left: 35%;
+	top: 70%;
+}
+.player-select-9 {
+	left: 70%;
+	top: 70%;
+}
+.img-identity {
+    position: absolute;
+    top: 20%;
+    width: 25%;
+    left: 60%;
+}
+.img-clock-horizon {
+	position: absolute;
+	width: 30%;
+    height: 24%;
+}
+.img-clock-predictor {
+	left: 58%;
+    bottom: 3%;
+}
+.img-clock-wolf {
+	left: 80%;
+	bottom: 30%;
+}
+.img-clock-guard {
+	left: 64%;
+	bottom: 30%;
+}
+.img-clock-poison {
+	left: 64%;
+	bottom: 30%;
+}
+.img-clock-vote {
+	left: 64%;
+	bottom: 30%;
+}
+.img-clock-witch-save {
+	left: 35%;
+	bottom: 45%;
+}
+.img-clock-witch-unrelated {
+	left: 35%;
+	bottom: 45%;
+}
+.img-clock-horizon img{
+	position: absolute;
+    width: 40%;
+    left: 0%;
+    top: 0%;
+}
+.img-clock-horizon span {
+    left: 50%;
+    top: 8%;
+    position: absolute;
+    font-size: 25px;
+    font-family: "楷体","楷体_GB2312";
+}
+.img-clock-vertical {
+	position: absolute;
+	width: 18%;
+    height: 33%;
+}
+.img-clock-vertical img {
+	position: absolute;
+    width: 53%;
+    height: 55%;
+    display: block;
+    margin-left: 26%;
+}
+.img-clock-vertical span {
+	position: absolute;
+    left: 21%;
+    bottom: 0%;
+    font-size: 23px;
+}
+.player-select-info {
+	border-radius: 15px;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #54e6f3;
+    background-color: #54e6f3;
+    position: relative;
+    font-size: 20px;
+    color: #2958a2;
+    margin: -2px 2px 0px 2px;
+    display: inline-block;
+}
+.player-select-1-wolf {
+	left: 0;
+	top: 0;
+}
+.player-select-2-wolf {
+	left: 65%;
+	top: 0;
+}
+.player-select-3-wolf {
+	left: 130%;
+	top: 0;
+}
+.player-select-4-wolf {
+	left: 0;
+	top: 35%;
+}
+.player-select-5-wolf {
+	left: 65%;
+	top: 35%;
+}
+.player-select-6-wolf {
+	left: 130%;
+	top: 35%;
+}
+.player-select-7-wolf {
+	left: 0;
+	top: 70%;
+}
+.player-select-8-wolf {
+	left: 65%;
+	top: 70%;
+}
+.player-select-9-wolf {
+	left: 130%;
+	top: 70%;
+}
+.player-vote2kill {
+	position: absolute;
+	width: 20%;
+	transform: rotate(-45deg);
+}
+.player-vote2kill-1-1 {
+	left: 28%;
+    top: 7%;
+}
+.player-vote2kill-1-2 {
+	left: 45%;
+    top: 7%;
+}
+.player-vote2kill-2-1 {
+    left: 94%;
+    top: 7%;
+}
+.player-vote2kill-2-2 {
+    left: 110%;
+    top: 7%;
+}
+.player-vote2kill-3-1 {
+    left: 159%;
+    top: 7%;
+}
+.player-vote2kill-3-2 {
+    left: 177%;
+    top: 7%;
+}
+.player-vote2kill-4-1 {
+	left: 28%;
+    top: 42%;
+}
+.player-vote2kill-4-2 {
+	left: 45%;
+    top: 42%;
+}
+.player-vote2kill-5-1 {
+    left: 94%;
+    top: 42%;
+}
+.player-vote2kill-5-2 {
+    left: 110%;
+    top: 42%;
+}
+.player-vote2kill-6-1 {
+    left: 159%;
+    top: 42%;
+}
+.player-vote2kill-6-2 {
+    left: 177%;
+    top: 42%;
+}
+.player-vote2kill-7-1 {
+	left: 28%;
+    top: 77%;
+}
+.player-vote2kill-7-2 {
+	left: 45%;
+    top: 77%;
+}
+.player-vote2kill-8-1 {
+    left: 94%;
+    top: 77%;
+}
+.player-vote2kill-8-2 {
+    left: 110%;
+    top: 77%;
+}
+.player-vote2kill-9-1 {
+    left: 159%;
+    top: 77%;
+}
+.player-vote2kill-9-2 {
+    left: 177%;
+    top: 77%;
+}
+.player-choose-btn {
+	font-family: "楷体","楷体_GB2312";
+	font-size: 18px;
+    font-weight: bolder;
+    border-radius: 5px;
+    border: 1px solid white;
+    background-color: #b3b3b3;
+    width: 29%;
+    height: 18%;
+	position: absolute;
+	bottom: 20%;
+}
+.player-choose-btn-left {
+	left: 15%;
+}
+.player-choose-btn-right {
+	right: 15%;
+}
+.player-action-info {
+	color: #54e6f3;
+	font-weight: bolder;
+}

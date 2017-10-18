@@ -97,6 +97,7 @@ public class JudgeController {
 					}
 				}
 				
+				//判断是否平票
 				if(top == second) {
 					timeLine.setDeadIndex(0);
 					timeLine.setType(4);
@@ -154,5 +155,4 @@ public class JudgeController {
 		nextTimeLineVO.setType(1);
 		nextTimeLineVO.setVoteOps(null);
 	}
-
 }

@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="vendor/css/login.css">
+<link rel="stylesheet" href="vendor/css/global.css">
+<script type="text/javascript" src="vendor/js/global.js"></script>
+
+<div id="screen" class="login-screen">
+	<img class="login-background" src="vendor/img/lyingman.png" />
+	<div class="head-lying"></div>
+	<div class="head-man"></div>
+	
+	<div class="form-signin">
+		<form>
+			<h2 class="form-signin-title">登录</h2>
+			<input ng-model="name" type="text" class="form-signin-input" placeholder="请输入昵称" required autofocus>
+			<button class="form-signin-button form-signin-button-left" ng-click="signIn(1)">开始匹配</button>
+		</form>
+	</div>
+</div>
