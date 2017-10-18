@@ -1,7 +1,6 @@
 (function() {
-	var loginController = function($scope, webSocketService, userInfoModel,
-			$location) {
-
+	var loginController = function($scope, webSocketService, userInfoModel, $location) {
+		
 		function joinRoom(msg) {
 			$(".player-name-section").html("");
 			$(".player-number-section").html("");
@@ -41,7 +40,7 @@
 							+ data.roomId;
 					roomsubscription = webSocketService.stompClient.subscribe(
 							dest, function(msg) {
-								joinRoom(JSON.parse(msg.body));
+								roomController.joinRoom(JSON.parse(msg.body));
 							});
 
 					// 订阅私人消息

@@ -1,5 +1,6 @@
 (function() {
 	var roomController = function($scope, webSocketService, userInfoModel, $location) {
+		
         var prepare = {
             usernumber: 0,
             username: userInfoModel.name,

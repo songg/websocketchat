@@ -4,7 +4,8 @@
 <!--<script type="text/javascript" src="vendor/js/game.js"></script>-->
 
 <!--进入房间界面-->
-<div id="screen" class="enter-screen" ng-if="prepare.show">
+<!-- <div id="screen" class="enter-screen" ng-if="prepare.show"> -->
+<div id="screen" class="enter-screen">
 	<img class="enter-bg" src="vendor/img/gameroom/enter-bg.png" />
 	<img class="lyingman-icon" src="vendor/img/lyingman.png" />
 	<div class="enter-message-box">
@@ -18,8 +19,8 @@
 <!--游戏界面-->
 <!-- <div id="screen" class="game-screen" ng-if="game.show"> -->
 <div id="screen" class="game-screen">
-	<img class="game-bg" src="vendor/img/gameroom/game-bg.png" />
-	<img class="id" src="vendor/img/gameroom/id.png" />
+	<img class="game-bg" src="vendor/img/gameroom/enter-bg.png" />
+	<!-- <img class="id" src="vendor/img/gameroom/id.png" /> -->
 	<img class="lyingman-icon" src="vendor/img/lyingman.png" />
 	<img class="player-card" src="vendor/img/gameroom/cards/villager.png" ng-if="game.role == 2">
 	<img class="player-card" src="vendor/img/gameroom/cards/wolf.png" ng-if="game.role == 1">
@@ -28,6 +29,12 @@
 		<img class="player-card" src="vendor/img/gameroom/cards/witch.png" ng-if="game.role == 5"> 
 	-->
 	<img class="player-card" src="vendor/img/gameroom/cards/guard.png" ng-if="game.role == 3">
+	<div class="enter-message-box">
+		<p>欢迎，{{prepare.username}}进入房间{{prepare.roomnumber}}</p>
+		<p>当前房间人数：{{prepare.usernumber}}/6</p>
+		<img ng-show="prepare.ready" ng-click="startGame()" class="enter-startbtn" src="vendor/img/gameroom/start-btn.png"/>
+		<img ng-click="quitGame()" class="enter-startbtn" src="vendor/img/gameroom/quit-btn.png"/>
+	</div>
 	<div class="table-section">
 		<!--显示每个人的昵称-->
 		<div class="player-name-section">
