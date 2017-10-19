@@ -35,6 +35,11 @@ public class Room {
 	 */
 	List<Integer> playerIndex; 
 	
+	/**
+	 * 房间对应的剧情时间轴
+	 */
+	List<TimeLineVO> timelines;
+	
 	
 	public Room() {
 		playerIndex = new ArrayList<>();
@@ -99,5 +104,13 @@ public class Room {
 			}
 		}
 		return null;
+	}
+
+	public List<TimeLineVO> getTimelines() {
+		return timelines;
+	}
+
+	public void setTimelines(List<TimeLineVO> timelines) {
+		this.timelines = timelines;
 	}
 }

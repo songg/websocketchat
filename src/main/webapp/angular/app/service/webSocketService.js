@@ -1,7 +1,6 @@
 (function() {
     var webSocketService = function(userInfoModel) {
-    
-    
+    	
         var socket = ws = new WebSocket("ws://172.17.137.163/ws.do");
     	var stompClient = Stomp.over(socket);
     	stompClient.connect({}, 

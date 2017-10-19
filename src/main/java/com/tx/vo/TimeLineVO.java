@@ -15,7 +15,12 @@ public class TimeLineVO {
 	private int deadIndex;
 	
 	/**
-	 * 1:游戏继续。 2:狼人胜利，3:村民胜利, 4:平票PK
+	 * 发言人编号
+	 */
+	private int talkIndex;
+	
+	/**
+	 * 1:天黑, 2:天亮结果, 3:遗言, 4:轮流发言, 5:投票, 6:投票结果, 7:平票PK, 8:狼人获胜, 9:平民获胜
 	 */
 	private int type;
 	
@@ -33,6 +38,11 @@ public class TimeLineVO {
 	 * 平票待PK玩家
 	 */
 	private List<Integer> pk;
+	
+	/**
+	 * 本轮倒计时时间 s
+	 */
+	private int times;
 
 	public boolean getDay() {
 		return day;
@@ -80,6 +90,22 @@ public class TimeLineVO {
 
 	public void setPk(List<Integer> pk) {
 		this.pk = pk;
+	}
+
+	public int getTimes() {
+		return times;
+	}
+
+	public void setTimes(int times) {
+		this.times = times;
+	}
+
+	public int getTalkIndex() {
+		return talkIndex;
+	}
+
+	public void setTalkIndex(int talkIndex) {
+		this.talkIndex = talkIndex;
 	}
 	
 }

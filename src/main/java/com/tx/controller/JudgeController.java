@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -17,6 +16,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.alibaba.fastjson.JSON;
 import com.tx.model.constant.PlayerOPEnum;
+import com.tx.model.constant.TimelineTypeEnum;
+import com.tx.tools.TimeLineTrigger;
 import com.tx.vo.PlayerOP;
 import com.tx.vo.Room;
 import com.tx.vo.TimeLineVO;
@@ -26,8 +27,6 @@ public class JudgeController {
 
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
-
-	Map<String, List<TimeLineVO>> timelines = new ConcurrentHashMap<String, List<TimeLineVO>>();
 
 	@Autowired
 	private RoomController roomController;
@@ -40,8 +39,8 @@ public class JudgeController {
 	 */
 	@MessageMapping("/op/{roomId}")
 	public void playerOp(@DestinationVariable String roomId, String op) {
-		List<TimeLineVO> timelineList = timelines.get(roomId);
 		Room r = roomController.getRoomsCache().get(roomId);
+		List<TimeLineVO> timelineList = r.getTimelines();
 		if (timelineList != null && timelineList.size() > 0) {
 			TimeLineVO timeLine = timelineList.get(timelineList.size() - 1);
 
@@ -100,7 +99,7 @@ public class JudgeController {
 				//判断是否平票
 				if(top == second) {
 					timeLine.setDeadIndex(0);
-					timeLine.setType(4);
+					timeLine.setType(TimelineTypeEnum.VOTE_PK.getType());
 					List<Integer> pk = new ArrayList<>(2);
 					pk.add(topDeadIndex);
 					pk.add(secondDeadIndex);
@@ -123,7 +122,7 @@ public class JudgeController {
 	public void timeline(@DestinationVariable String roomId) {
 
 		Room room = roomController.getRoomsCache().get(roomId);
-		List<TimeLineVO> timeLines = timelines.get(roomId);
+		List<TimeLineVO> timeLines = room.getTimelines();
 		String dest = "/room/%s/%s/timeline";
 
 		TimeLineVO timeLine = null;
@@ -142,17 +141,11 @@ public class JudgeController {
 
 		simpMessagingTemplate.convertAndSend(String.format(dest, room.getPrivateKey(), roomId), timeLine);
 
-		timeLines.stream().collect(Collectors.groupingBy(null));
-
-		// 填充下一个timeline
-		TimeLineVO nextTimeLineVO = new TimeLineVO();
-		timeLines.add(nextTimeLineVO);
-		nextTimeLineVO.setDay(!timeLine.getDay());
-		if (!timeLine.getDay()) {
-			nextTimeLineVO.setDateCount(timeLines.size() / 2);
+		if(timeLine.getType() != TimelineTypeEnum.WOLF_WIN.getType() || timeLine.getType() != TimelineTypeEnum.FARMER_WIN.getType()) {
+			// 填充下一个timeline
+			timeLines.add(TimeLineTrigger.nextTimeLine(timeLine));
 		}
-		nextTimeLineVO.setDeadIndex(0);
-		nextTimeLineVO.setType(1);
-		nextTimeLineVO.setVoteOps(null);
+		
+
 	}
 }
