@@ -47,14 +47,20 @@ public class JudgeController {
 			PlayerOP playerOp = JSON.parseObject(op, PlayerOP.class);
 			switch (PlayerOPEnum.from(playerOp.getOpType())) {
 			case KILL:
-			case GUARD:
-				if (timeLine.getDeadIndex() != playerOp.getTargetIndex()) {
+				if (timeLine.getGuardIndex() != playerOp.getTargetIndex()) {
 					timeLine.setDeadIndex(playerOp.getTargetIndex());
-				} else {
-					timeLine.setDeadIndex(0);
+					r.addDeadNum(timeLine.getDeadIndex());
 				}
 				break;
+			case GUARD:
+				timeLine.setGuardIndex(playerOp.getTargetIndex());
+				if (timeLine.getDeadIndex() == playerOp.getTargetIndex()) {
+					timeLine.setDeadIndex(0);
+					r.reduceDeadNum(timeLine.getDeadIndex());
+				} 
+				break;
 			case IDENTIFY:
+				timeLine.setIdentifyIndex(playerOp.getTargetIndex());
 				UserVO player = r.getPlayer(playerOp.getTargetIndex());
 				String seerDest = "/room/%s/%s/seer/%s";
 				simpMessagingTemplate.convertAndSend(
@@ -140,7 +146,17 @@ public class JudgeController {
 		}
 
 		simpMessagingTemplate.convertAndSend(String.format(dest, room.getPrivateKey(), roomId), timeLine);
-
+		
+		//下一个timeline为狼人获胜
+		if(room.getHumanityDeadNum() == 2) {
+			timeLines.add(TimeLineTrigger.wolfWinTimeLine());
+		}
+		
+		//下一个timeline为平民获胜
+		if(room.getWolfDeadNum() == 2) {
+			timeLines.add(TimeLineTrigger.humanityWinTimeLine());
+		}
+ 		
 		if(timeLine.getType() != TimelineTypeEnum.WOLF_WIN.getType() || timeLine.getType() != TimelineTypeEnum.FARMER_WIN.getType()) {
 			// 填充下一个timeline
 			timeLines.add(TimeLineTrigger.nextTimeLine(timeLine));

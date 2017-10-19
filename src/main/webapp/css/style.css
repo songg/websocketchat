@@ -1,5 +1,5 @@
 body {
-	background: url(Hazy_Forest_Road_Wallpaper_qoek0.jpg);
+	background: url(background.png);
 	background-attachment: fixed;
 	background-size: cover;
 }
@@ -32,7 +32,7 @@ body {
 	position: absolute;
 	width: 120px;
 	height: 120px;
-	background: rgba(255, 255, 255, 0.9);
+	background: rgba(255, 235, 235, 0.9);
 	text-align: center;
 	align-items: center;
 	justify-content: center;

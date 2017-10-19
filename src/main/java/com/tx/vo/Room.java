@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import com.tx.model.constant.RoleEnum;
+
 public class Room {
 	/**
 	 * 房间id
@@ -31,14 +33,34 @@ public class Room {
 	private String privateKey;
 	
 	/**
-	 * 玩家编号
+	 * 座位编号，预先生成且固定
 	 */
 	List<Integer> playerIndex; 
+	
+	/**
+	 * 存活的座位编号,每死一个从中就从这里剔除
+	 */
+	List<Integer> liveIndex;
+	
+	/**
+	 * 自由发言阶段能发言的座位编号,发言后从里面去掉,每晚基于liveIndex重置
+	 */
+	List<Integer> canTalkIndex;
 	
 	/**
 	 * 房间对应的剧情时间轴
 	 */
 	List<TimeLineVO> timelines;
+	
+	/**
+	 * 人类死亡数量
+	 */
+	private int humanityDeadNum = 0;
+	
+	/**
+	 * 狼人死亡数量
+	 */
+	private int wolfDeadNum = 0;
 	
 	
 	public Room() {
@@ -49,6 +71,9 @@ public class Room {
 		playerIndex.add(4);
 		playerIndex.add(5);
 		playerIndex.add(6);
+		
+		canTalkIndex.addAll(playerIndex);
+		liveIndex.addAll(playerIndex);
 	}
 
 	public String getRoomId() {
@@ -112,5 +137,53 @@ public class Room {
 
 	public void setTimelines(List<TimeLineVO> timelines) {
 		this.timelines = timelines;
+	}
+
+	public int getHumanityDeadNum() {
+		return humanityDeadNum;
+	}
+
+	public void setHumanityDeadNum(int humanityDeadNum) {
+		this.humanityDeadNum = humanityDeadNum;
+	}
+
+	public int getWolfDeadNum() {
+		return wolfDeadNum;
+	}
+
+	public void setWolfDeadNum(int wolfDeadNum) {
+		this.wolfDeadNum = wolfDeadNum;
+	}
+
+	public void addDeadNum(int deadIndex) {
+		if(this.getPlayer(deadIndex).getRole() == RoleEnum.WOLF.getRole()) {
+			this.setWolfDeadNum(this.getWolfDeadNum() + 1);
+		}else {
+			this.setHumanityDeadNum(this.getHumanityDeadNum() + 1);
+		}		
+	}
+	
+	public void reduceDeadNum(int deadIndex) {
+		if(this.getPlayer(deadIndex).getRole() == RoleEnum.WOLF.getRole()) {
+			this.setWolfDeadNum(this.getWolfDeadNum() - 1);
+		}else {
+			this.setHumanityDeadNum(this.getHumanityDeadNum() - 1);
+		}		
+	}
+
+	public List<Integer> getLiveIndex() {
+		return liveIndex;
+	}
+
+	public void setLiveIndex(List<Integer> liveIndex) {
+		this.liveIndex = liveIndex;
+	}
+
+	public List<Integer> getCanTalkIndex() {
+		return canTalkIndex;
+	}
+
+	public void setCanTalkIndex(List<Integer> canTalkIndex) {
+		this.canTalkIndex = canTalkIndex;
 	}
 }

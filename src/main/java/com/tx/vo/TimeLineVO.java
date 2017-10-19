@@ -15,6 +15,16 @@ public class TimeLineVO {
 	private int deadIndex;
 	
 	/**
+	 * 被守护编号
+	 */
+	private int guardIndex;
+	
+	/**
+	 * 被验身份编号
+	 */
+	private int identifyIndex;
+	
+	/**
 	 * 发言人编号
 	 */
 	private int talkIndex;
@@ -106,6 +116,22 @@ public class TimeLineVO {
 
 	public void setTalkIndex(int talkIndex) {
 		this.talkIndex = talkIndex;
+	}
+
+	public int getGuardIndex() {
+		return guardIndex;
+	}
+
+	public void setGuardIndex(int guardIndex) {
+		this.guardIndex = guardIndex;
+	}
+
+	public int getIdentifyIndex() {
+		return identifyIndex;
+	}
+
+	public void setIdentifyIndex(int identifyIndex) {
+		this.identifyIndex = identifyIndex;
 	}
 	
 }
