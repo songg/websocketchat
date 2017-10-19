@@ -2,10 +2,11 @@ package com.tx.tools;
 
 import com.tx.model.constant.Constants;
 import com.tx.model.constant.TimelineTypeEnum;
+import com.tx.vo.Room;
 import com.tx.vo.TimeLineVO;
 
 public class TimeLineTrigger {
-	public static TimeLineVO nextTimeLine(TimeLineVO currentTimeLine) {
+	public static TimeLineVO nextTimeLine(TimeLineVO currentTimeLine, Room r) {
 		TimeLineVO nextTimeLineVO = new TimeLineVO();
 		switch (TimelineTypeEnum.from(currentTimeLine.getType())) {
 		case DARK:
@@ -28,12 +29,19 @@ public class TimeLineTrigger {
 				nextTimeLineVO.setDay(true);
 				nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
 				nextTimeLineVO.setTimes(Constants.DISCUSS_TIME);
-				nextTimeLineVO.setTalkIndex(talkIndex);
+				nextTimeLineVO.setTalkIndex(r.getCanTalkIndex().get(0));
+				r.getCanTalkIndex().remove(0);
 			}
 			break;
 		case DISCUSS:
 			//全部发言完才进入投票环节，否则继续下一个人发言
-			nextTimeLineVO.setType(TimelineTypeEnum.VOTE.getType());
+			if(r.getCanTalkIndex().size() > 0) {
+				nextTimeLineVO.setType(TimelineTypeEnum.DISCUSS.getType());
+				nextTimeLineVO.setTalkIndex(r.getCanTalkIndex().get(0));
+				r.getCanTalkIndex().remove(0);
+			}else {
+				nextTimeLineVO.setType(TimelineTypeEnum.VOTE.getType());
+			}
 			break;
 		case VOTE:
 			//进入公布投票结果环节
@@ -53,6 +61,11 @@ public class TimeLineTrigger {
 		case VOTE_PK_RESULT:
 			//进入天黑环节
 			nextTimeLineVO.setType(TimelineTypeEnum.DARK.getType());
+			nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
+			
+			//重置第二天可以自由讨论的人
+			r.setCanTalkIndex(r.getLiveIndex());
+			
 			nextTimeLineVO.setDay(false);
 			break;
 		default:

@@ -122,7 +122,7 @@ public class JudgeController {
 	}
 
 	/**
-	 * 时间推进, 杀人结果, 游戏结果广播 天黑 / 天亮 杀人结果 /
+	 * 时间推进，参考{@link TimelineTypeEnum}
 	 */
 	@MessageMapping("/trigger/{roomId}")
 	public void timeline(@DestinationVariable String roomId) {
@@ -159,7 +159,7 @@ public class JudgeController {
  		
 		if(timeLine.getType() != TimelineTypeEnum.WOLF_WIN.getType() || timeLine.getType() != TimelineTypeEnum.FARMER_WIN.getType()) {
 			// 填充下一个timeline
-			timeLines.add(TimeLineTrigger.nextTimeLine(timeLine));
+			timeLines.add(TimeLineTrigger.nextTimeLine(timeLine, room));
 		}
 		
 
