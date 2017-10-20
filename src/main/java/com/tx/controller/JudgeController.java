@@ -15,7 +15,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.alibaba.fastjson.JSON;
-import com.tx.model.constant.Constants;
 import com.tx.model.constant.PlayerOPEnum;
 import com.tx.model.constant.TimelineTypeEnum;
 import com.tx.tools.TimeLineTrigger;
@@ -159,7 +158,7 @@ public class JudgeController {
 			timeLine.setType(TimelineTypeEnum.DARK.getType());
 			timeLine.setVoteOps(null);
 			timeLine.setDateCount(0);
-			timeLine.setTimes(Constants.DARK_TIME);
+			timeLine.setTimes(TimelineTypeEnum.DARK.getTimes());
 			timeLines.add(timeLine);
 		} else {
 			timeLine = timeLines.get(timeLines.size() - 1);

@@ -124,7 +124,6 @@ public class TimeLineTrigger {
 		default:
 			break;
 		}
-
 		return nextTimeLineVO;
 	}
 
