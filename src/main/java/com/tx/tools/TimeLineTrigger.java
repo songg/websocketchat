@@ -2,7 +2,6 @@ package com.tx.tools;
 
 import org.apache.commons.collections.CollectionUtils;
 
-import com.tx.model.constant.Constants;
 import com.tx.model.constant.TimelineTypeEnum;
 import com.tx.vo.Room;
 import com.tx.vo.TimeLineVO;
@@ -21,7 +20,7 @@ public class TimeLineTrigger {
 			nextTimeLineVO.setType(TimelineTypeEnum.DARK_OP_RESULT.getType());
 			nextTimeLineVO.setDay(true);
 			nextTimeLineVO.setDateCount(currentTimeLine.getDateCount() + 1);
-			nextTimeLineVO.setTimes(Constants.DARK_OP_RESULT_TIME);
+			nextTimeLineVO.setTimes(TimelineTypeEnum.DARK_OP_RESULT.getTimes());
 			break;
 		case DARK_OP_RESULT:
 			// 当前阶段为广播昨晚用户行为结果阶段，进入遗言或者自由讨论时间
@@ -30,12 +29,12 @@ public class TimeLineTrigger {
 				nextTimeLineVO.setDay(true);
 				nextTimeLineVO.setTalkIndex(currentTimeLine.getDeadIndex());
 				nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
-				nextTimeLineVO.setTimes(Constants.LAST_WORDS_TIME);
+				nextTimeLineVO.setTimes(TimelineTypeEnum.LAST_WORDS.getTimes());
 			} else {
 				nextTimeLineVO.setType(TimelineTypeEnum.DISCUSS.getType());
 				nextTimeLineVO.setDay(true);
 				nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
-				nextTimeLineVO.setTimes(Constants.DISCUSS_TIME);
+				nextTimeLineVO.setTimes(TimelineTypeEnum.DISCUSS.getTimes());
 				nextTimeLineVO.setTalkIndex(r.getCanTalkIndex().get(0));
 				r.getCanTalkIndex().remove(0);
 			}
@@ -46,10 +45,10 @@ public class TimeLineTrigger {
 				nextTimeLineVO.setType(TimelineTypeEnum.DISCUSS.getType());
 				nextTimeLineVO.setTalkIndex(r.getCanTalkIndex().get(0));
 				r.getCanTalkIndex().remove(0);
-				nextTimeLineVO.setTimes(Constants.DISCUSS_TIME);
+				nextTimeLineVO.setTimes(TimelineTypeEnum.DISCUSS.getTimes());
 			} else {
 				nextTimeLineVO.setType(TimelineTypeEnum.VOTE.getType());
-				nextTimeLineVO.setTimes(Constants.VOTE_TIME);
+				nextTimeLineVO.setTimes(TimelineTypeEnum.VOTE.getTimes());
 			}
 			nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
 			nextTimeLineVO.setDay(true);
@@ -59,6 +58,7 @@ public class TimeLineTrigger {
 			nextTimeLineVO.setType(TimelineTypeEnum.VOTE_RESULT.getType());
 			nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
 			nextTimeLineVO.setDay(true);
+			nextTimeLineVO.setTimes(TimelineTypeEnum.VOTE_RESULT.getTimes());
 			break;
 		case VOTE_RESULT:
 			// 如果有平票进入平票PK环节
@@ -66,7 +66,7 @@ public class TimeLineTrigger {
 				nextTimeLineVO.setType(TimelineTypeEnum.PK.getType());
 				nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
 				nextTimeLineVO.setDay(true);
-				nextTimeLineVO.setTimes(Constants.PK_TIME);
+				nextTimeLineVO.setTimes(TimelineTypeEnum.PK.getTimes());
 				nextTimeLineVO.setPk(currentTimeLine.getPk());
 			} else {
 				// 如果没有平票进入天黑环节
@@ -75,23 +75,41 @@ public class TimeLineTrigger {
 				nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
 				// 重置第二天可以自由讨论的人
 				r.setCanTalkIndex(r.getLiveIndex());
-				nextTimeLineVO.setTimes(Constants.DARK_TIME);
+				nextTimeLineVO.setTimes(TimelineTypeEnum.DARK.getTimes());
 			}
 			break;
 		case PK:
-			// 进入公布pk结果环节
-			nextTimeLineVO.setType(TimelineTypeEnum.PK_DISCUSS.getType());
+			// 进入pk第一人发言环节
+			nextTimeLineVO.setType(TimelineTypeEnum.PK_DISCUSS_1.getType());
+			nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
+			nextTimeLineVO.setDay(true);
+			nextTimeLineVO.setPk(currentTimeLine.getPk());
+			nextTimeLineVO.setTalkIndex(currentTimeLine.getPk().get(0));
+			nextTimeLineVO.setTimes(TimelineTypeEnum.PK_DISCUSS_1.getTimes());
 			break;
-		case PK_DISCUSS:
-			//未发言完下一个人发言
-			nextTimeLineVO.setType(TimelineTypeEnum.PK_DISCUSS.getType());
-			
-			//发言完进入PK_VOTE阶段
+		case PK_DISCUSS_1:
+			//进入pk第二人发言环节
+			nextTimeLineVO.setType(TimelineTypeEnum.PK_DISCUSS_2.getType());
+			nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
+			nextTimeLineVO.setDay(true);
+			nextTimeLineVO.setPk(currentTimeLine.getPk());
+			nextTimeLineVO.setTalkIndex(currentTimeLine.getPk().get(1));
+			nextTimeLineVO.setTimes(TimelineTypeEnum.PK_DISCUSS_2.getTimes());
+			break;
+		case PK_DISCUSS_2:
+			//发言完进入PK投票环节
 			nextTimeLineVO.setType(TimelineTypeEnum.PK_VOTE.getType());
+			nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
+			nextTimeLineVO.setDay(true);
+			nextTimeLineVO.setPk(currentTimeLine.getPk());
+			nextTimeLineVO.setTimes(TimelineTypeEnum.PK_VOTE.getTimes());
 			break;
 		case PK_VOTE:
-			//进入PK投票结果阶段
+			//进入PK投票结果环节
 			nextTimeLineVO.setType(TimelineTypeEnum.PK_VOTE_RESULT.getType());
+			nextTimeLineVO.setDateCount(currentTimeLine.getDateCount());
+			nextTimeLineVO.setDay(true);
+			nextTimeLineVO.setTimes(TimelineTypeEnum.PK_VOTE_RESULT.getTimes());
 			break;
 		case PK_VOTE_RESULT:
 			// 进入天黑环节
@@ -101,8 +119,7 @@ public class TimeLineTrigger {
 
 			// 重置第二天可以自由讨论的人
 			r.setCanTalkIndex(r.getLiveIndex());
-
-			nextTimeLineVO.setDay(false);
+			nextTimeLineVO.setTimes(TimelineTypeEnum.DARK.getTimes());
 			break;
 		default:
 			break;
