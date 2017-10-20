@@ -53,12 +53,12 @@ public class Room {
 	List<TimeLineVO> timelines;
 	
 	/**
-	 * 人类死亡数量
+	 * 人类死亡数量，用来判断胜负用
 	 */
 	private int humanityDeadNum = 0;
 	
 	/**
-	 * 狼人死亡数量
+	 * 狼人死亡数量，判断胜负用
 	 */
 	private int wolfDeadNum = 0;
 	

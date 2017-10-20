@@ -1,5 +1,7 @@
 package com.tx.vo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public class TimeLineVO {
 	/**
 	 * 投票行为
 	 */
-	private Map<Integer, Integer> voteOps;
+	private Map<Integer, Integer> voteOps = new HashMap<>();
 	
 	/**
 	 * 天数
@@ -53,6 +55,19 @@ public class TimeLineVO {
 	 * 本轮倒计时时间 s
 	 */
 	private int times;
+	
+	/**
+	 * 狼人杀人编号汇总，用以决定谁被杀
+	 */
+	private List<Integer> killIndex = new ArrayList<>();
+	
+	
+
+	public TimeLineVO() {
+		for(int i=1; i<7; i++) {
+			voteOps.put(i, 0);
+		}
+	}
 
 	public boolean getDay() {
 		return day;
@@ -133,5 +148,8 @@ public class TimeLineVO {
 	public void setIdentifyIndex(int identifyIndex) {
 		this.identifyIndex = identifyIndex;
 	}
-	
+
+	public List<Integer> getKillIndex() {
+		return killIndex;
+	}
 }
