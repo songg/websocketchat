@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum PlayerOPEnum {
-	KILL(1), IDENTIFY(2), GUARD(3), VOTE(4);
+	START(1), KILL(2), IDENTIFY(3), GUARD(4), VOTE(5);
 
 	private final int opType;
 

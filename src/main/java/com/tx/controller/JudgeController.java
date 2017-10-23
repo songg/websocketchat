@@ -47,6 +47,10 @@ public class JudgeController {
 			PlayerOP playerOp = JSON.parseObject(op, PlayerOP.class);
 			synchronized (timeLine) {
 				switch (PlayerOPEnum.from(playerOp.getOpType())) {
+				case START:
+					//开始游戏，启动每个房间的法官，定时推进时间轴
+					r.startJudger(simpMessagingTemplate);
+					break;
 				case KILL:
 					//添加被杀对象
 					timeLine.getKillIndex().add(playerOp.getTargetIndex());
