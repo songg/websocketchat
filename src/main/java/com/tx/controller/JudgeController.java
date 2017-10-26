@@ -143,48 +143,46 @@ public class JudgeController {
 		}
 	}
 
-	/**
-	 * 时间推进，参考{@link TimelineTypeEnum}
-	 */
-	@MessageMapping("/trigger/{roomId}")
-	public void timeline(@DestinationVariable String roomId) {
-
-		Room room = roomController.getRoomsCache().get(roomId);
-		List<TimeLineVO> timeLines = room.getTimelines();
-		String dest = "/room/%s/%s/timeline";
-
-		TimeLineVO timeLine = null;
-		// 第一次触发，进入第一个天黑
-		if (CollectionUtils.isEmpty(timeLines)) {
-			timeLine = new TimeLineVO();
-			timeLine.setDay(false);
-			timeLine.setDeadIndex(0);
-			timeLine.setType(TimelineTypeEnum.DARK.getType());
-			timeLine.setVoteOps(null);
-			timeLine.setDateCount(0);
-			timeLine.setTimes(TimelineTypeEnum.DARK.getTimes());
-			timeLines.add(timeLine);
-		} else {
-			timeLine = timeLines.get(timeLines.size() - 1);
-		}
-
-		simpMessagingTemplate.convertAndSend(String.format(dest, room.getPrivateKey(), roomId), timeLine);
-		
-		//下一个timeline为狼人获胜
-		if(room.getHumanityDeadNum() == 2) {
-			timeLines.add(TimeLineTrigger.wolfWinTimeLine());
-		}
-		
-		//下一个timeline为平民获胜
-		if(room.getWolfDeadNum() == 2) {
-			timeLines.add(TimeLineTrigger.humanityWinTimeLine());
-		}
- 		
-		if(timeLine.getType() != TimelineTypeEnum.WOLF_WIN.getType() || timeLine.getType() != TimelineTypeEnum.FARMER_WIN.getType()) {
-			// 填充下一个timeline
-			timeLines.add(TimeLineTrigger.nextTimeLine(timeLine, room));
-		}
-		
-
-	}
+//	/**
+//	 * 时间推进，参考{@link TimelineTypeEnum}
+//	 */
+//	@MessageMapping("/trigger/{roomId}")
+//	public void timeline(@DestinationVariable String roomId) {
+//
+//		Room room = roomController.getRoomsCache().get(roomId);
+//		List<TimeLineVO> timeLines = room.getTimelines();
+//		String dest = "/room/%s/%s/timeline";
+//
+//		TimeLineVO timeLine = null;
+//		// 第一次触发，进入第一个天黑
+//		if (CollectionUtils.isEmpty(timeLines)) {
+//			timeLine = new TimeLineVO();
+//			timeLine.setDay(false);
+//			timeLine.setDeadIndex(0);
+//			timeLine.setType(TimelineTypeEnum.DARK.getType());
+//			timeLine.setVoteOps(null);
+//			timeLine.setDateCount(0);
+//			timeLine.setTimes(TimelineTypeEnum.DARK.getTimes());
+//			timeLines.add(timeLine);
+//		} else {
+//			timeLine = timeLines.get(timeLines.size() - 1);
+//		}
+//
+//		simpMessagingTemplate.convertAndSend(String.format(dest, room.getPrivateKey(), roomId), timeLine);
+//		
+//		//下一个timeline为狼人获胜
+//		if(room.getHumanityDeadNum() == 2) {
+//			timeLines.add(TimeLineTrigger.wolfWinTimeLine());
+//		}
+//		
+//		//下一个timeline为平民获胜
+//		if(room.getWolfDeadNum() == 2) {
+//			timeLines.add(TimeLineTrigger.humanityWinTimeLine());
+//		}
+// 		
+//		if(timeLine.getType() != TimelineTypeEnum.WOLF_WIN.getType() || timeLine.getType() != TimelineTypeEnum.FARMER_WIN.getType()) {
+//			// 填充下一个timeline
+//			timeLines.add(TimeLineTrigger.nextTimeLine(timeLine, room));
+//		}
+//	}
 }
