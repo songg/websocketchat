@@ -7,9 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.tx.model.constant.RoleEnum;
-import com.tx.model.constant.TimelineTypeEnum;
 import com.tx.tools.LrsJudger;
-import com.tx.tools.TimeLineTrigger;
 
 public class Room {
 	/**

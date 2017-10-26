@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -16,8 +15,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.alibaba.fastjson.JSON;
 import com.tx.model.constant.PlayerOPEnum;
-import com.tx.model.constant.TimelineTypeEnum;
-import com.tx.tools.TimeLineTrigger;
 import com.tx.vo.PlayerOP;
 import com.tx.vo.Room;
 import com.tx.vo.TimeLineVO;
